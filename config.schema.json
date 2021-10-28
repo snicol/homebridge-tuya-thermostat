@@ -1,15 +1,38 @@
 {
-  "pluginAlias": "ExampleHomebridgePlugin",
+  "pluginAlias": "TuyaThermostatPlugin",
   "pluginType": "platform",
   "singular": true,
   "schema": {
     "type": "object",
+
     "properties": {
-      "name": {
-        "title": "Name",
-        "type": "string",
-        "required": true,
-        "default": "Example Dynamic Platform"
+      "devices": {
+        "type": "array",
+
+        "items": {
+          "type": "object",
+          "additionalProperties": false,
+
+          "required": [
+            "name",
+            "id",
+            "key"
+          ],
+
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+
+            "deviceId": {
+              "type": "string"
+            },
+
+            "key": {
+              "type": "string"
+            }
+          }
+        }
       }
     }
   }
