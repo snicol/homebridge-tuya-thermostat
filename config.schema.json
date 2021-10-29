@@ -24,7 +24,7 @@
               "type": "string"
             },
 
-            "deviceId": {
+            "id": {
               "type": "string"
             },
 
