@@ -116,12 +116,15 @@ export class TuyaThermostatAccessory {
   }
 
   async setTargetHeatingCoolingState(value: CharacteristicValue) {
-    if (value === this.platform.Characteristic.CurrentHeatingCoolingState.HEAT) {
-      await this.client.set({dps: 101, set: true});
+    if (value !== this.platform.Characteristic.CurrentHeatingCoolingState.HEAT) {
+      await this.client.set({dps: 101, set: false});
       return;
     }
 
-    await this.client.set({dps: 101, set: false});
+    await Promise.all([
+      this.client.set({dps: 103, set: 'hold'}),
+      this.client.set({dps: 101, set: true}),
+    ]);
   }
 
   async getCurrentTemperature(): Promise<CharacteristicValue> {
