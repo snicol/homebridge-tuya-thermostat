@@ -70,6 +70,9 @@ export class TuyaHomebridgePlatform implements DynamicPlatformPlugin {
       if (existingAccessory) {
         this.log.info('Restoring existing accessory from cache:', existingAccessory.displayName);
 
+        existingAccessory.context.device = device;
+        this.api.updatePlatformAccessories([existingAccessory]);
+
         new TuyaThermostatAccessory(this, existingAccessory);
         continue;
       }
