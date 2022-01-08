@@ -61,14 +61,40 @@ export class TuyaThermostatAccessory {
       this.platform.log.debug('device synced', { dev: this.device });
     });
 
+    this.client.on('error', err => this.platform.log.warn('device connection error', { err }));
+
     // Assume we'll get kicked off or have to sync manual changes on the thermostat
     setInterval(async () => {
       try {
         await this.client.find();
         await this.client.connect();
         await this.client.get();
+
+        this.platform.log.debug('device synced', { dev: this.device });
+
+        if (this.device.disableAfterSeconds === undefined) {
+          return;
+        }
+
+        if (this.device.heatingSince === undefined) {
+          if (this.device.state) {
+            this.device.heatingSince = Date.now();
+          }
+
+          return;
+        }
+
+        // interval in MS / 1000 for seconds
+        const elapsed = (Date.now() - this.device.heatingSince) / 1000;
+
+        if (elapsed < this.device.disableAfterSeconds) {
+          return;
+        }
+
+        await this.client.set({dps: 101, set: false});
+        this.device.heatingSince = undefined;
       } catch (error) {
-        this.platform.log.error('error in device reconnect attempt', { error });
+        this.platform.log.warn('error in device reconnect attempt', { error });
       }
     }, 5000);
   }

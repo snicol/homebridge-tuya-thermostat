@@ -7,6 +7,7 @@ interface DeviceConfig {
   name: string;
   id: string;
   key: string;
+  disableAfterSeconds?: number;
 }
 
 export interface Device extends DeviceConfig {
@@ -15,6 +16,7 @@ export interface Device extends DeviceConfig {
   isWarming: boolean;
   currentTemp: number;
   targetTemp: number;
+  heatingSince?: number;
 }
 
 export class TuyaHomebridgePlatform implements DynamicPlatformPlugin {
@@ -54,7 +56,6 @@ export class TuyaHomebridgePlatform implements DynamicPlatformPlugin {
    * Accessories must only be registered once, previously created accessories
    * must not be registered again to prevent "duplicate UUID" errors.
    */
-
   discoverDevices() {
     const configDevices: DeviceConfig[] = this?.config?.devices;
 
