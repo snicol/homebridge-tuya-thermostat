@@ -30,6 +30,10 @@
 
             "key": {
               "type": "string"
+            },
+
+            "disableAfterSeconds": {
+              "type": "number"
             }
           }
         }
