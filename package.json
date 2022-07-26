@@ -1,14 +1,14 @@
 {
   "displayName": "Homebridge Tuya Thermostat",
   "name": "homebridge-tuya-thermostat",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/snicol/homebridge-tuya-thermostat.git"
+    "url": "git://github.com/NamelessPharaoh/homebridge-tuya-thermostat.git"
   },
   "bugs": {
-    "url": "https://github.com/snicol/homebridge-tuya-thermostat/issues"
+    "url": "https://github.com/NamelessPharaoh/homebridge-tuya-thermostat/issues"
   },
   "engines": {
     "node": ">=14.18.1",
