@@ -1,6 +1,6 @@
 {
-  "displayName": "Homebridge Tuya Thermostat",
-  "name": "homebridge-tuya-thermostat",
+  "displayName": "Homebridge Tuya Thermostat-mes",
+  "name": "homebridge-tuya-thermostat-mes",
   "version": "0.1.8",
   "license": "MIT",
   "repository": {
