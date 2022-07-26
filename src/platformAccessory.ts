@@ -55,7 +55,7 @@ export class TuyaThermostatAccessory {
     this.client.get({schema: true}).then(data => this.platform.log.debug(data));
     this.client.on('data', data => {
       this.device.state = data.dps['1'];
-      this.device.isWarming = data.dps['102'] === '1' ? true : false;
+      this.device.isWarming = data.dps['102'] === '0' ? true : false;
       this.device.targetTemp = Math.max(10, data.dps['2']/2);
       this.device.currentTemp = Math.max(10, data.dps['3']/2);
 
@@ -92,7 +92,7 @@ export class TuyaThermostatAccessory {
           return;
         }
 
-        await this.client.set({dps: 102, set: 0});
+        await this.client.set({dps: 1, set: false});
         this.device.heatingSince = undefined;
       } catch (error) {
         this.platform.log.warn('error in device reconnect attempt', { error });
@@ -102,7 +102,7 @@ export class TuyaThermostatAccessory {
 
   async getCurrentHeatingCoolingState(): Promise<CharacteristicValue> {
     if (this.device.isWarming) {
-      return this.platform.Characteristic.TargetHeatingCoolingState.HEAT;
+      return this.platform.Characteristic.TargetHeatingCoolingState.COOL;
     }
 
     return this.platform.Characteristic.TargetHeatingCoolingState.OFF;
@@ -110,7 +110,7 @@ export class TuyaThermostatAccessory {
 
   async getTargetHeatingCoolingState(): Promise<CharacteristicValue> {
     if (this.device.state) {
-      return this.platform.Characteristic.CurrentHeatingCoolingState.HEAT;
+      return this.platform.Characteristic.CurrentHeatingCoolingState.COOL;
     }
 
     return this.platform.Characteristic.CurrentHeatingCoolingState.OFF;
@@ -124,7 +124,7 @@ export class TuyaThermostatAccessory {
 
     await Promise.all([
       //this.client.set({dps: 103, set: 'hold'}),
-      this.client.set({dps: 102, set: 0}),
+      this.client.set({dps: 1, set: true}),
     ]);
   }
 
@@ -145,7 +145,7 @@ export class TuyaThermostatAccessory {
   }
 
   async setTargetTemperature(value: CharacteristicValue) {
-    const convertedTemp = (value as number) ;
+    const convertedTemp = (value as number)*2 ;
 
     await this.client.set({dps: 2, set: convertedTemp});
   }
